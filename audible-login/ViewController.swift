@@ -12,10 +12,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .red
         cv.dataSource = self
         cv.delegate = self
+        cv.isPagingEnabled = true
         return cv
     }()
     
@@ -28,7 +30,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         collectionView.anchorToTop(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(PageCell.self, forCellWithReuseIdentifier: cellID)
         
     }
     
@@ -40,6 +42,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.height)
     }
 
 
