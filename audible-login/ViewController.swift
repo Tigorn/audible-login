@@ -15,7 +15,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .red
+        cv.backgroundColor = .white
         cv.dataSource = self
         cv.delegate = self
         cv.isPagingEnabled = true
@@ -24,23 +24,38 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     let cellID = "cellID"
     
+    let pages: [Page] = {
+        
+        let firstPage = Page(title: "Share a great listen", message: "It's free to send your boooks to the people in your life. Every recipient's first book is on us.", imageName: "page1")
+        
+        let secondPage = Page(title: "Send from your library", message: "Tap the More menu next to any book. Choose \"Send this Book\"", imageName: "page2")
+        
+        let thirdPage = Page(title: "Send from the player", message: "Tap the More menu in the upper corner. Choose \"Send this Book\"", imageName: "page3")
+        
+        return [firstPage, secondPage, thirdPage]
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(collectionView)
         
-        collectionView.anchorToTop(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        collectionView.anchorToTop(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         
         collectionView.register(PageCell.self, forCellWithReuseIdentifier: cellID)
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return pages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PageCell
+        
+        let page = pages[indexPath.item]
+        cell.page = page
         
         return cell
     }
@@ -54,7 +69,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
 extension UIView {
     
-    func anchorToTop(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
+    func anchorToTop(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
         
         anchorWithConstantsToTop(top, left: left, bottom: bottom, right: right, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0)
     }
